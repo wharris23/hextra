@@ -1,0 +1,14 @@
+---
+title: "Test Code Block Links"
+weight: 100
+---
+
+# Testing File Links
+
+**Relative file with base_url**
+
+```yaml
+highlight:
+  file: examples/hello.py
+  base_url: https://github.com/imfing/hextra/blob/main/
+
