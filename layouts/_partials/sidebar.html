@@ -3,17 +3,22 @@
 {{- $disableSidebar := .disableSidebar | default false -}}
 {{- $displayPlaceholder := .displayPlaceholder | default false -}}
 
-{{- $sidebarClass := cond $disableSidebar (cond $displayPlaceholder "hx:md:hidden hx:xl:block" "hx:md:hidden") "hx:md:sticky" -}}
-
 {{- $navRoot := cond (eq site.Home.Type "docs") site.Home $context.FirstSection -}}
 {{- $pageURL := $context.RelPermalink -}}
 
-{{/* EXPERIMENTAL */}}
 {{- if .context.Params.sidebar.hide -}}
   {{- $disableSidebar = true -}}
-  {{- $displayPlaceholder = true -}}
+  {{- $displayPlaceholder = false -}}
 {{- end -}}
 
+{{- $sidebarClass := "hx:md:sticky" -}}
+{{- if $disableSidebar -}}
+  {{- if $displayPlaceholder -}}
+    {{- $sidebarClass = "hx:md:hidden hx:xl:block" -}}
+  {{- else -}}
+    {{- $sidebarClass = "hx:md:hidden" -}}
+  {{- end -}}
+{{- end -}}
 
 <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] {{ $sidebarClass }}">
   <!-- Search bar on small screen -->
@@ -30,7 +35,7 @@
     <!-- Sidebar on large screen -->
     {{- if $disableSidebar -}}
       {{- if $displayPlaceholder }}<div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div>{{ end -}}
-      {{ .context.Scratch.Set "enableFooterSwitches" true }}
+      {{ .context.Store.Set "enableFooterSwitches" true }}
     {{- else -}}
       <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
         {{ template "sidebar-main" (dict "context" $navRoot "page" $context  "pageURL" $pageURL) }}
