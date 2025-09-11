@@ -7,16 +7,16 @@
 
 {{- if $filename -}}
   <div class="hextra-code-filename not-prose" dir="auto">
-    {{- $file_url := $filename -}} <!-- default to just filename -->
+    {{- $file_url := $filename -}} {{/* default to just filename */}}
 
     {{- if $full_url -}}
       {{- $file_url = $full_url -}}
     {{- else if or (strings.HasPrefix $filename "http://") (strings.HasPrefix $filename "https://") -}}
       {{- $file_url = $filename -}}
     {{- else if $base_url -}}
-      {{- $base_url = strings.TrimSuffix "/" $base_url -}}
-      {{- $filename = strings.TrimPrefix "/" $filename -}}
-      {{- $file_url = urls.JoinPath $base_url $filename -}}
+      {{- $trimmedBase := strings.TrimSuffix "/" $base_url -}}
+      {{- $trimmedFilename := strings.TrimPrefix "/" $filename -}}
+      {{- $file_url = urls.JoinPath $trimmedBase $trimmedFilename -}}
     {{- end -}}
 
 
